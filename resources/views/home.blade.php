@@ -6,6 +6,8 @@
 		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">
 				<div class="panel-heading">Home</div>
+				<img class="weather-image" src="/images/{{ $id_icon }}.png" alt="weather" >
+				<br />
 				<b>{{ $name }}'s weather for today</b>
 				<br />
 				<br />

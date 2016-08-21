@@ -44,7 +44,7 @@ class HomeController extends Controller {
 		$location->long;
 		$location->lat;
 
-			$url = 'http://api.openweathermap.org/data/2.5/forecast/daily?lat='.$location->lat.'&lon='.$location->long.'&cnt=7&units=metric&APPID=747c12fd84b299e633775c9f3d6daed8';
+			$url = 'http://api.openweathermap.org/data/2.5/forecast/daily?lat='.$location->lat.'&lon='.$location->long.'&units=metric&cnt=7&APPID=747c12fd84b299e633775c9f3d6daed8';
 
 			$json_data = @file_get_contents($url);
 			//make sure the file get contents does not fail
@@ -58,16 +58,15 @@ class HomeController extends Controller {
 			if($decoded_data['cod'] == 404) {
 				return redirect('edit')->with('key', 'You have been redirected to this page because you did not provide a valid location. Please provide a valid location below.');
 			}
+
+			$json_string = file_get_contents('http://api.openweathermap.org/data/2.5/forecast/daily?lat='.$location->lat.'&lon='.$location->long.'&units=metric&cnt=7&APPID=747c12fd84b299e633775c9f3d6daed8');
+			$weekly['list'] = json_decode($json_string, true);
 			$data = array(
 					'name' => $decoded_data['city']['name'],
 					'temps' => $decoded_data['list'][0]['temp'],
 					'weather' => $decoded_data['list'][0]['weather'],
 					'id_icon' => $decoded_data['list'][0]['weather'][0]['icon'],
 			);
-
-			$json_string = file_get_contents('http://api.openweathermap.org/data/2.5/forecast/daily?lat='.$location->lat.'&lon='.$location->long.'&cnt=7&APPID=747c12fd84b299e633775c9f3d6daed8');
-			$weekly['list'] = json_decode($json_string, true);
-
 
 		return view('home', $data);
 	}

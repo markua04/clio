@@ -43,7 +43,6 @@
 				<ul class="nav navbar-nav">
 					<li><a href="/">Home</a></li>
 					<li><a href="/edit">Edit Profile</a></li>
-                    <li><a href="/series">Series Updates</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">

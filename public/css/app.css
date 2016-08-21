@@ -6306,4 +6306,10 @@ label,
   margin-top:10px;
 }
 
+.weather-image {
+  margin: 0 auto;
+  width:95%;
+  display:block;
+}
+
 

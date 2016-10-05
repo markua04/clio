@@ -4,13 +4,11 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Weather Viewer</title>
+	<title>CLIO knowledge resource</title>
     <script src="js/jquery.min.js"></script>
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?js?key=AIzaSyCi6dqOUsysne7wt7ielSnjLqO82PcgEE0&sensor=false"></script>
+	<script src="js/news-scroll.js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyCi6dqOUsysne7wt7ielSnjLqO82PcgEE0&libraries=places"></script>
     <script type="text/javascript" src="js/map.js"></script>
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi6dqOUsysne7wt7ielSnjLqO82PcgEE0&libraries=places"></script>
-	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-	<script type="text/javascript" src="js/map.js"></script>
 	<link href="/css/app.css" rel="stylesheet">
 	<link href="/css/map.css" rel="stylesheet">
 
@@ -43,6 +41,7 @@
 				<ul class="nav navbar-nav">
 					<li><a href="/">Home</a></li>
 					<li><a href="/edit">Edit Profile</a></li>
+					<li><a href="/news">News</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
@@ -67,7 +66,5 @@
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi6dqOUsysne7wt7ielSnjLqO82PcgEE0&libraries=places&callback=initAutocomplete"
-		async defer></script>
 </body>
 </html>

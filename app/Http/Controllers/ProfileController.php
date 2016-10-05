@@ -12,15 +12,21 @@ class ProfileController extends Controller {
      */
     public function edit()
     {
+
         if(isset($_POST['username'])){
             $username = $_POST['username'];
             $surname = $_POST['surname'];
+            if(!isset($_POST['news'])){
+                $_POST['news'] = 'no';
+            }
+            $news = $_POST['news'];
             $lat = $_POST['lat'];
             $long = $_POST['long'];
             $id = $_POST['id'];
             $user = User::find($id);
             $user->name = $username;
             $user->surname = $surname;
+            $user->news = $news;
             $user->lat = $lat;
             $user->long = $long;
             $user->save();

@@ -34,6 +34,12 @@
                                            value="{{ Auth::user()->surname }}">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-md-1 control-label">Select News to display : </label>
+                                <div class="col-md-6">
+                                    <input name="news" type="checkbox" value="yes" />
+                                </div>
+                            </div>
                             <div id="lat"><input name="lat" type="hidden" value="-33.925838">
                             </div>
                             <div id="long"><input name="long" type="hidden" value="18.423220">

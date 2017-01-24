@@ -2,11 +2,15 @@
 use App\Http\Requests;
 use App\User;
 use Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent;
+use App\Http\Traits\newsTrait;
 use Session;
 
 
-class HomeController extends Controller {
+class HomeController extends Controller
+{
+	use newsTrait;
 
 	/*
 	|--------------------------------------------------------------------------
@@ -44,31 +48,113 @@ class HomeController extends Controller {
 		$location->long;
 		$location->lat;
 
-			$url = 'http://api.openweathermap.org/data/2.5/forecast/daily?lat='.$location->lat.'&lon='.$location->long.'&units=metric&cnt=7&APPID=747c12fd84b299e633775c9f3d6daed8';
+		$history = self::history();
+		$decoded_data = self::weather($location);
+		$quotes = self::quotes();
+		$sources = array(
+				'source1' => 'ign',
+				'source2' => 'sky-sports-news',
+				'source3' => 'the-lad-bible',
+				'source4' => 'time'
+		);
 
-			$json_data = @file_get_contents($url);
-			//make sure the file get contents does not fail
-			if($json_data === FALSE){
-				return redirect('edit')->with('key','Your connection to the server is not working');
-			}
-			$json_data = file_get_contents($url);
-			$decoded_data = json_decode($json_data, true);
+		$newsMixed = $this->getNewsVariousSources($sources);
 
-			// Check if decoded data is true then display if true or display message if false
-			if($decoded_data['cod'] == 404) {
-				return redirect('edit')->with('key', 'You have been redirected to this page because you did not provide a valid location. Please provide a valid location below.');
-			}
-
-			$json_string = file_get_contents('http://api.openweathermap.org/data/2.5/forecast/daily?lat='.$location->lat.'&lon='.$location->long.'&units=metric&cnt=7&APPID=747c12fd84b299e633775c9f3d6daed8');
-			$weekly['list'] = json_decode($json_string, true);
-			$data = array(
-					'name' => $decoded_data['city']['name'],
-					'temps' => $decoded_data['list'][0]['temp'],
-					'weather' => $decoded_data['list'][0]['weather'],
-					'id_icon' => $decoded_data['list'][0]['weather'][0]['icon'],
-			);
+		$data = array(
+			'name' => $decoded_data['name'],
+			'country' => $decoded_data['sys']['country'],
+			'current_temp' => $decoded_data['main']['temp'],
+			'humidity' => $decoded_data['main']['humidity'],
+			'high' => $decoded_data['main']['temp_max'],
+			'low' => $decoded_data['main']['temp_min'],
+			'description' => $decoded_data['weather'][0]['description'],
+			'id_icon' => $decoded_data['weather'][0]['icon'],
+			'history' => $history,
+			'news'   => $newsMixed,
+			'quote_author' => $quotes['author'],
+			'quote' => $quotes['quote'],
+		);
 
 		return view('home', $data);
 	}
 
+	public function weather($location){
+		$url = 'http://api.openweathermap.org/data/2.5/weather?lat='.$location->lat.'&lon='.$lon=$location->long.'&units=metric&appid=747c12fd84b299e633775c9f3d6daed8';
+		$json_data = @file_get_contents($url);
+		//make sure the file get contents does not fail
+		if ($json_data === FALSE) {
+			return redirect('edit')->with('key', 'Your connection to the server is not working');
+		}
+
+		$decoded_data = json_decode($json_data, true);
+		// Check if decoded data is true then display if true or display message if false
+		if ($decoded_data['cod'] == 502) {
+			return redirect('edit')->with('key', 'You have been redirected to this page because you did not provide a valid location. Please provide a valid location below.');
+		}
+		return $decoded_data;
+
+	}
+
+	public function history()
+	{
+		$history_url = 'http://history.muffinlabs.com/date';
+
+		$cachedContent = Cache::get('history');
+		if (isset($cachedContent)) {
+
+			$historyData = json_decode($cachedContent);
+			$random = array_rand($historyData->data->Events, 1);
+			$historyYear = $historyData->data->Events[$random]->year;
+			$historyText = $historyData->data->Events[$random]->text;
+			$historyLink = $historyData->data->Events[$random]->links[0]->link;
+			$historyCombined = array("history_year" => $historyYear, "history_text" => $historyText, "history_link" => $historyLink);
+			return $historyCombined;
+
+		} else {
+			$json_data = @file_get_contents($history_url);
+			Cache::put('history', $json_data, 60);
+			$cachedContent = Cache::get('history');
+			$historyData = json_decode($cachedContent);
+			$random = array_rand($historyData->data->Events, 1);
+			$historyYear = $historyData->data->Events[$random]->year;
+			$historyText = $historyData->data->Events[$random]->text;
+			$historyLink = $historyData->data->Events[$random]->links[0]->link;
+			$historyCombined = array("history_year" => $historyYear, "history_text" => $historyText, "history_link" => $historyLink);
+			return $historyCombined;
+		}
+
+	}
+
+	public function quotes()
+	{
+
+		$url = 'http://quotes.rest/qod.json';
+		$cachedContent = Cache::get('quotes');
+
+		if (isset($cachedContent)) {
+			$quoteData = json_decode($cachedContent);
+			$author = $quoteData->contents->quotes[0]->author;
+			$quote = $quoteData->contents->quotes[0]->quote;
+			$quoteDataNew = array(
+					"quote" => $quote,
+					"author" => $author
+			);
+			return $quoteDataNew;
+		} else {
+
+			$json_data = @file_get_contents($url);
+			Cache::put('quotes', $json_data, 120);
+			$cachedContent = Cache::get('quotes');
+			$quoteData = json_decode($cachedContent);
+			$author = $quoteData->contents->quotes[0]->author;
+			$quote = $quoteData->contents->quotes[0]->quote;
+			$quoteDataNew = array(
+					"quote" => $quote,
+					"author" => $author
+			);
+			return $quoteDataNew;
+	}
 }
+
+}
+

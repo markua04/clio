@@ -4,13 +4,13 @@ $(document).ready(function(){
         var x = 0;
         var scrollInterval = setInterval(function() {
 
-            $("#scrollBox").delay(3000).animate({top:"-=95"}, 3000);
-            if (++x === 8) {
+            $("#scrollBox").delay(3000).animate({top:"-=182"}, 3000);
+            if (++x === 3) {
                 window.clearInterval(scrollInterval);
                 $("#scrollBox").delay(3000).animate({top:"0px"}, 2000);
                 scroll();
             }
         },500);
-    }
+    };
     scroll();
 });

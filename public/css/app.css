@@ -6364,7 +6364,8 @@ label,
 
 /* Scroll Box */
 #scrollContainer {
-    height: 95px;
+    height: 177px;
+    margin-top: 10px;
     overflow: hidden;
 }
 #scrollBox {
@@ -6382,5 +6383,39 @@ label,
     margin-right:0;
 }
 
+.temp-widget {
+    margin:0;
+}
 
+.widget-image {
+    margin-top:5px;
+}
 
+.hidden-text {
+  color:white;
+}
+
+.current-temp {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.temps {
+  padding-left: 50px;
+  padding-top:5px;
+}
+
+.history-box {
+  padding-top: 5px;
+}
+
+.history-image {
+  padding-top:5px;
+  padding-bottom:5px;
+}
+
+.news-articles-header {
+    padding-bottom:2px;
+    padding-top:2px;
+    margin:0;
+}

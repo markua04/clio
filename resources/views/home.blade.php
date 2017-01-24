@@ -11,90 +11,94 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">Home</div>
 				<div class="row">
-					<div class="col-lg-6">
+					<div class="col-lg-8">
+						<div class="heading-content">
+							<b>This day in History</b>
+						</div>
+						<div class="history-content history-box">
+							@if($history != null)
+								<img class="history-image" style="width:190px;height:auto;" src="/images/todayinhistory.jpg" alt="history" >
+								<p>Year : {{ $history['history_year'] }}</p>
+								<p>Historical Data : {{ $history['history_text'] }}</p>
+								<a href="{{ $history['history_link'] }}">View Article</a>
+							@else
+								No History available for today. Please notify admin.
+							@endif
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="heading-content-right">
+							<b>News updates</b>
+						</div>
+						<div class="row-scroller" id="scrollContainer">
+							<div id="scrollBox">
+								@if(isset($news))
+									@foreach($news as $news_article)
+										<div style="text-align:center;margin-bottom:10px;" class="scroll-box-content">
+											<a target="blank" href="{{ $news_article['url'] }}">
+												@if($news_article['urlToImage'] == '')
+													@if(strpos($news_article['url'], 'skysports') == true)
+														<img class="news-image-resp img-responsive" style="width:auto; max-height:115px !important; margin: 0 auto;" src="/images/logo/skysports.jpg">
+													@elseif(strpos($news_article['url'], 'ladbible') == true)
+														<img class="news-image-resp img-responsive" style="width:auto; max-height:150px; margin: 0 auto;" src="/images/logo/ladbible.png">
+													@endif
+												@else
+													<img class="news-image-resp img-responsive" style="width:auto; max-height:110px; margin: 0 auto;" src="{{ $news_article['urlToImage'] }}">
+												@endif
+											</a>
+											<h4 class="news-articles-header">{{ strtoupper(str_replace('-',' ', $news_article[0]['source'])) }}</h4>
+											<div style ="word-break:break-all;" class="content-text">
+												@if(strlen($news_article['title']) > 60)
+												<a target="blank" href="{{ $news_article['url'] }}">{{ substr($news_article['title'], 0, 80) }}</a>
+												@else
+												<a target="blank" href="{{ $news_article['url'] }}">{{ substr($news_article['title'], 0, 80) }} - {{ substr($news_article['description'], 0, 23) . '...' }}</a>
+											    @endif
+											</div>
+										</div>
+									@endforeach
+								@else
+									No news available. Please refresh in 15 mins.
+								@endif
+							</div>
+						</div>
+					</div>
+					</div>
+				<br />
+				<div class="row">
+					<div class="col-lg-8">
 						<div class="heading-content">
 							<b>Quote of the day</b>
 							<br />
 						</div>
 						<div class="history-content">
-							@if($quote !== null && $author !== null)
-								<b>Author : </b><p>{{ $author }}</p>
+							@if($quote !== null && $quote_author !== null)
+								<b>Author : </b><p>{{ $quote_author }}</p>
 								<b>Quote : </b><p>{{ $quote }}</p>
 							@else
 								No quote available for today. Please refresh in 15 mins.
 							@endif
 						</div>
 					</div>
-					<div class="col-lg-6">
-						<div class="row-scroller" id="scrollContainer">
-							<div id="scrollBox">
-								@if(isset($news))
-									@foreach($news as $news_article)
-										<p>
-											<a target="blank" href="{{ $news_article['url'] }}">
-												<img style="width:140px; height:85px;" src="{{ $news_article['urlToImage'] }}">
-											</a>
-												{{ substr($news_article['title'], 0, 40) . '...' }}
-										</p>
-									@endforeach
-								@else
-									No news available. Please refresh in 15 mins.
-								@endif
-							</div>
-							</div>
-					</div>
-					</div>
-				<br />
-					<div class="heading-content">
-						<b>This day in History</b>
-					</div>
-				<div class="history-content">
-					@if($history != null)
-						<p>Year : {{ $history['history_year'] }}</p>
-						<p>Historical Data : {{ $history['history_text'] }}</p>
-						<a href="{{ $history['history_link'] }}">View Article</a>
-					@else
-						No History available for today. Please notify admin.
-					@endif
-				</div>
-				<br />
-				<div class="heading-content">
-					<b>{{ $name }}'s weather for today</b>
-				</div>
-				<br />
-				<div class="table-weather-container">
-				<table class="table table-bordered table-weather">
-					<thead>
-					<tr>
-						<th>Current Temperature</th>
-						<th>Min Temperature</th>
-						<th>Max Temperature</th>
-						<th>Weather</th>
-						<th>Icon</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr>
-						<td>{{ substr($temps['day'],0,2) }}&deg;C</td>
-						<td>{{ substr($temps['min'],0,2) }}&deg;C</td>
-						<td>{{ substr($temps['max'],0,2) }}&deg;C</td>
-						<td>{{ $weather[0]['description'] }}</td>
-						<td><img src="http://openweathermap.org/img/w/{{ $id_icon }}.png" alt="weather" ></td>
-					</tr>
-					</tbody>
-				</table>
-					<div class="weather-widget row">
-						<div class="col-lg-1">
-							<img src="http://openweathermap.org/img/w/{{ $id_icon }}.png" alt="weather" >
+					<div class="weather-widget col-lg-4">
+						<div class="heading-content-right">
+							<b>{{ $name . ' , ' . $country }}'s weather for today</b>
 						</div>
-						<div class="col-lg-11">
-							{{ substr($temps['max'],0,2) }}&deg;C<br/>
-							{{ $weather[0]['description'] }}
+						<div class="col-lg-2">
+							<h2 class="current-temp">{{ substr($current_temp,0,2) }}&deg;c</h2>
+							<img style="width:55px;height:auto;" class="temp-widget" src="http://openweathermap.org/img/w/{{ $id_icon }}.png" alt="weather" >
+						</div>
+						<div class="temps col-lg-10">
+							<p class="temp-widget">High : {{ substr($high,0,2) }}&deg;C</p>
+							<p class="temp-widget">Low : {{ substr($low,0,2) }}&deg;C</p>
+							<p class="temp-widget">Humidity : {{ substr($humidity,0,2) }}</p>
+							<p class="temp-widget">Type : {{ $description }}</p>
 						</div>
 					</div>
+				</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+	</body>
 @endsection

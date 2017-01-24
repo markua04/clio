@@ -160,3 +160,10 @@ header>h1 {
   position: relative;
   max-width: 917px;
 }
+
+.scroll-box-content {
+  height:85px;
+  width:140px;
+  margin-bottom:5px !important;
+  margin-top:5px !important;
+}

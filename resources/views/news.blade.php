@@ -86,15 +86,16 @@
                                     </div>
                                 </div>
                             </div>
+
                             <h4>Sports</h4>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
                                             Sky Sports News</a>
                                     </h4>
                                 </div>
-                                <div id="collapse3" class="panel-collapse collapse">
+                                <div id="collapse4" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         @if(isset($skySports_news))
                                             @foreach($skySports_news as $news)

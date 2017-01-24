@@ -19,6 +19,8 @@ Route::get('series', 'SeriesController@index');
 
 Route::get('news', 'NewsController@index');
 
+Route::get('reminder', 'ReminderController@index');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
